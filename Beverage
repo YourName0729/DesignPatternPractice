@@ -1,0 +1,51 @@
+#include <iostream>
+#include <stdio.h>
+#include <vector>
+#include <string>
+
+using namespace std;
+
+class Beverage {
+public:
+	virtual void brew() = 0;
+	virtual void flavor() = 0;
+	virtual void mix() = 0;
+};
+class MilkTea : public Beverage {
+public:
+	void brew(){
+		printf("brew black tea\n");
+	}
+	void flavor(){
+		printf("add milk\n");
+	}
+	void mix() {
+		printf("add chocolate\n");
+	}
+};
+class Coffee : public Beverage {
+public:
+	void brew(){
+		printf("brew coffee beans\n");
+	}
+	void flavor(){
+		printf("add creamer\n");
+	}
+	void mix() {
+		printf("add Cinnamon powder\n");
+	}
+};
+
+int main() {
+	MilkTea mt;
+	Coffee cf;
+	mt.brew();
+	mt.flavor();
+	mt.mix();
+	
+	cf.brew();
+	cf.flavor();
+	cf.mix();
+	
+	return 0;
+}
