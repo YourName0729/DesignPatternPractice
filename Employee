@@ -80,7 +80,7 @@ public:
 		employees.push_back(&em);
 	}
 	Employee getchild(unsigned int i) {
-		if(employees.size() <= i) {
+		if(employees.size() <= i || i < 0) {
 			printf("Not legal index\n");
 			return IllegalEmployee();
 		}			
@@ -132,6 +132,7 @@ int main() {
     manager1.add(manager2);
     manager1.myPrint();
     manager2.myPrint();
+    manager1.getchild(-1);
     manager1.remove(developer2);
     manager1.remove(developer1);
     manager1.myPrint();
