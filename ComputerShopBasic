@@ -17,6 +17,9 @@ public:
 	int getPrice(){ return basePrice; }
 };
 
+class ErrorPart : public Part {	
+};
+
 class Motherboard : public Part{
 private:
 	int frequency;
@@ -43,6 +46,15 @@ public:
 	void addProduct(Part& part) {
 		parts.push_back(part);
 	}
+	Part findProduct(string id) {
+		for(unsigned int i = 0; i < parts.size(); i++) {
+			if(id == parts[i].getId()) {
+				return parts[i];
+			}
+		}
+		printf("%s is not found\n", id.c_str());
+		return ErrorPart();
+	}
 	int totalPrice() {
 		int sum = 0;
 		for(unsigned int i = 0; i < parts.size(); i++) {
@@ -56,6 +68,7 @@ public:
 				parts[i].getId().c_str(), 
 				   parts[i].getPrice());
 		}
+		printf("\n");
 	}
 };
 
@@ -64,21 +77,22 @@ int main() {
 	Memory MM1;
 	Transaction tran;
 	
-	MB1.setId("MB11");
+	MB1.setId("MB1ID");
 	MB1.setFrequency(20);
 	MB1.setPrice(500);
 	
-	MM1.setId("MM11");
+	MM1.setId("MM1ID");
 	MM1.setCapacity(330);
 	MM1.setPrice(510);
 	
 	tran.addProduct(MB1);
 	tran.content();
-	printf("price : %d\n", tran.totalPrice());
+	printf("price : %d\n\n", tran.totalPrice());
 	tran.addProduct(MM1);
 	tran.content();
-	printf("price : %d\n", tran.totalPrice());
+	Part found = tran.findProduct("MM1ID");
+	tran.findProduct("404");
+	printf("price : %d\n\n", tran.totalPrice());
 	
 	return 0;
 }
-
