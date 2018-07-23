@@ -18,7 +18,7 @@ public:
 	FreeInventor() : Inventor(2){}
 	void update(string msg) {
 		printf("A Free User get message : %s\n", msg.c_str());
-	}	
+	}
 };
 class VIPInventor : public Inventor {
 public:
@@ -53,17 +53,17 @@ int main() {
 	FreeInventor me;
 	VIPInventor professor;
 	StockBroker school;
-	
+
 	school.regist(&me);
 	school.notify("a new student", 0);
-	
+
 	school.regist(&professor);
-	school.notify("a severe professer", 1);
-	
+	school.notify("a severe professor", 1);
+
 	school.notify("there is a bad student", 5);
-	
+
 	school.remove(&me);
-	school.notify("no bad student", 5);
-	
+	school.notify("no bad student any more", 5);
+
 	return 0;
 }

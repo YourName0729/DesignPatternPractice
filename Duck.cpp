@@ -9,12 +9,7 @@ class QuackBehavior {
 public:
 	virtual void quack() = 0;
 };
-class NoQuack : public QuackBehavior {
-public:
-	void quack() {
-		printf("This duck can\'t speak!\n");
-	}
-};
+
 class NormalQuack : public QuackBehavior {
 public:
 	void quack() {
@@ -28,16 +23,18 @@ public:
 	}
 };
 
+class SwimBehavior {
+public:
+	void swim() {
+		printf("it can swim\n");
+	}
+};
+
 class FlyBehavior {
 public:
 	virtual void fly() = 0;
 };
-class NoFly : public FlyBehavior {
-public:
-	void fly() {
-		printf("This duck can\'t fly!\n");
-	}
-};
+
 class NormalFly : public FlyBehavior {
 public:
 	void fly() {
@@ -47,21 +44,35 @@ public:
 
 class Duck {
 private:
-	QuackBehavior* quackBehavior;
-	FlyBehavior* flyBehavior;
+	QuackBehavior* _quack;
+	SwimBehavior* _swim;
+	FlyBehavior* _fly;
 public:
-	Duck() : quackBehavior(new NoQuack()), flyBehavior(new NoFly()){}
-	Duck(QuackBehavior* q) : quackBehavior(q), flyBehavior(new NoFly()){}
-	Duck(FlyBehavior* f) : quackBehavior(new NoQuack()), flyBehavior(f){}
-	Duck(QuackBehavior* q, FlyBehavior* f) : quackBehavior(q), flyBehavior(f){}
+	Duck() {
+		_quack = NULL;
+		_swim = NULL;
+		_fly = NULL;
+	}
+	Duck& setQuack(QuackBehavior* qb) {
+		_quack = qb;
+	}
+	Duck& setSwim(SwimBehavior* sb) {
+		_swim = sb;
+	}
+	Duck& setFly(FlyBehavior* fb) {
+		_fly = fb;
+	}
 	void quack() {
-		quackBehavior->quack();
+		if(_quack != NULL)
+			_quack->quack();
 	}
 	void fly() {
-		flyBehavior->fly();
+		if(_fly != NULL)
+			_fly->fly();
 	}
 	void swim() {
-		printf("Of course it can swim\n");
+		if(_swim != NULL)
+			_swim->swim();
 	}
 	void print() {
 		quack();
@@ -72,16 +83,6 @@ public:
 };
 
 int main() {
-	Duck normalDuck(new NormalQuack());
-	normalDuck.print();
-	
-	Duck rubberDuck(new SqueakQuack());
-	rubberDuck.print();
-	
-	Duck decoyDuck;
-	decoyDuck.print();
-	
-	Duck canFlyDuck(new NormalQuack(), new NormalFly());
-	canFlyDuck.print();
+
 	return 0;
 }
