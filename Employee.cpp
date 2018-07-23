@@ -36,13 +36,14 @@ public:
 		return salary;
 	}
 	
-	virtual void add(Employee em){}
-	virtual void remove(Employee em){}
-	virtual Employee getchild(unsigned int i){}
-	virtual void myPrint(){}
+	virtual void add(Employee& em) = 0;
+	virtual void remove(Employee& em) = 0;
+	virtual Employee& getchild(unsigned int i) = 0;
+	virtual void myPrint() = 0;
 	
 	void print() {
 		printf("%s\'s salary is %f\n", name.c_str(), salary);
+		myPrint();
 	};
 	
 	bool operator==(const Employee& em) const {
@@ -50,75 +51,74 @@ public:
 	}
 };
 
-class IllegalEmployee : public Employee {
+/*class IllegalEmployee : public Employee {
 public:
 	IllegalEmployee() {
 		printf("there is an error call of Employee\n");
 	}
 	void myprint() {
-		printf("Do not have employee\n");
+		//printf("Do not have employee\n");
 	}
 	void add(Employee em) {
-		printf("Could not have employee\n");
+		//printf("Could not have employee\n");
 	}
 	Employee getchild(unsigned int i) {
-		printf("Could not have employee\n");
-		return IllegalEmployee();
+		//printf("Could not have employee\n");
+		//return IllegalEmployee();
 	}
 	void remove(Employee em) {
-		printf("Could not have employee\n");
+		//printf("Could not have employee\n");
 	}
-};
+};*/
 
 class Manager : public Employee {
 private:
 	vector<Employee*> employees;
 public:
 	Manager(string name, double salary) : Employee(name, salary){}
-	void add(Employee em){
+	void add(Employee &em){
 		printf("add %s to %s\n", em.getName().c_str(), getName().c_str());
 		employees.push_back(&em);
 	}
-	Employee getchild(unsigned int i) {
+	Employee& getchild(unsigned int i) {
 		if(employees.size() <= i || i < 0) {
-			printf("Not legal index\n");
-			return IllegalEmployee();
-		}			
-		return *employees[i];
+			printf("Illegal index\n");
+			//return IllegalEmployee();
+		}else		
+			return *employees[i];
 	}
 	void myPrint() {
+		//printf("go %s myprint\n", getName().c_str());
 		for(unsigned int i = 0; i < employees.size(); i++) {
 			employees[i]->print();
 		}
 	}
-	void remove(Employee em) {
-		bool removed = false;
+	void remove(Employee &em) {
 		for(unsigned int i = 0; i < employees.size(); i++) {
 			if(*employees[i] == em) {
-				removed = true;
 				employees.erase(employees.begin() + i);
 			}					
 		}
-		if(!removed)
-			printf("The Employee doesn\'t exist\n");		
+		//if(!removed)
+		//	printf("The Employee doesn\'t exist\n");		
 	}
 };
 
 class Developer : public Employee {
 public:
 	Developer(string name, double salary) : Employee(name, salary){}
-	void myprint() {
-		printf("Do not have employee\n");
+	void myPrint() {
+		//printf("Do not have employee\n");
 	}
-	void add(Employee em) {
-		printf("Could not have employee\n");
+	void add(Employee &em) {
+		//printf("Could not have employee\n");
 	}
-	Employee getchild(unsigned int i) {
-		printf("Could not have employee\n");
-		return IllegalEmployee();
+	Employee& getchild(unsigned int i) {
+		//printf("Could not have employee\n");
+		//return IllegalEmployee();
 	}
 	void remove(Employee& em) {
-		printf("Could not have employee\n");
+		//printf("Could not have employee\n");
 	}
 };
 
@@ -130,11 +130,12 @@ int main() {
     manager1.add(developer1);
     manager2.add(developer2);
     manager1.add(manager2);
-    manager1.myPrint();
-    manager2.myPrint();
-    manager1.getchild(-1);
-    manager1.remove(developer2);
+    printf("\n");
+    manager1.print();
+    printf("\n");
+    manager2.print();
+    printf("\n");
     manager1.remove(developer1);
-    manager1.myPrint();
+    manager1.print();
 	return 0;
 }
