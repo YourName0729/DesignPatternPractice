@@ -29,33 +29,61 @@ public:
 	void walk() { printf("bird walk\n"); }
 	void sleep() { printf("bird sleep\n"); }
 };
-class PetFactory {
+class Egg {
 public:
-	enum PetType {
-		DOG,
-		CAT,
-		BIRD
-	};
-	static Pet* create(PetType pt) {
-		switch(pt) {
-			case DOG:
-				return new Dog();
-			case CAT:
-				return new Cat();
-			case BIRD:
-				return new Bird();
-		}
-	} 
+	virtual Pet* hatch() = 0;
+};
+class DogEgg : public Egg {
+public:
+	Pet* hatch() { return new Dog(); }
+};
+class CatEgg : public Egg {
+public:
+	Pet* hatch() { return new Cat(); }
+};
+class  BirdEgg : public Egg {
+public:
+	Pet* hatch() { return new Bird(); }
+};
+
+class EggShop {
+private:
+	Egg* _egg;
+public:
+	EggShop(Egg* egg) : _egg(egg) {}
+	Pet* hatch() { return _egg->hatch(); }
+};
+
+class People {
+private:
+	Pet* _pet;
+public:
+	void setPet(Pet* pet) {
+		if(_pet != NULL)
+			delete _pet;
+		_pet = pet;
+	}
+	void callMyPet() {
+		_pet->eat();
+		_pet->sleep();
+		_pet->walk();
+        printf("\n");
+	}
 };
 
 int main() {
-	Pet* doge = PetFactory::create(PetFactory::DOG);
-	Pet* kitty = PetFactory::create(PetFactory::CAT);
-	Pet* GG = PetFactory::create(PetFactory::BIRD);
-	
-	doge->eat();
-	kitty->walk();
-	GG->sleep();
-	
+	People me;
+	EggShop dogmom(new DogEgg());
+	me.setPet(dogmom.hatch());
+	me.callMyPet();
+
+	EggShop catmom(new CatEgg());
+	me.setPet(catmom.hatch());
+	me.callMyPet();
+
+	EggShop birdmom(new BirdEgg());
+	me.setPet(birdmom.hatch());
+	me.callMyPet();
+
 	return 0;
 }
